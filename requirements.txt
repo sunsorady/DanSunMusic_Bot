@@ -1,0 +1,15 @@
+moviepy
+aiogram
+aiohttp
+requests
+beautifulsoup4
+python-dotenv
+cachetools
+instaloader
+pytubefix
+psycopg2-binary
+matplotlib
+httpx
+aiocron
+
+fake-useragent
