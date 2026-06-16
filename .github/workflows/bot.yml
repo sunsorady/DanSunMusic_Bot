@@ -1,1 +1,38 @@
-→Read .github\workflows\bot.yml 
+name: Run Telegram Bot
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip setuptools
+          pip install -r requirements.txt
+
+      - name: Run bot
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          admin_id: ${{ secrets.admin_id }}
+          custom_api_url: ${{ secrets.custom_api_url }}
+          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+          db_auth: ${{ secrets.db_auth }}
+        run: python main.py
