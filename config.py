@@ -5,16 +5,17 @@ from dotenv import load_dotenv
 load_dotenv()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-db_auth = str(os.getenv("db_auth", os.getenv("DATABASE_URL", "")))
-admin_id = int(os.getenv("admin_id"))
-custom_api_url = str(os.getenv("custom_api_url"))
-MEASUREMENT_ID = str(os.getenv("MEASUREMENT_ID"))
-API_SECRET = str(os.getenv("API_SECRET"))
-CHANNEL_ID = str(os.getenv("CHANNEL_ID"))
+db_auth = str(os.getenv("db_auth") or os.getenv("DATABASE_URL") or "")
+admin_id = os.getenv("admin_id")
+admin_id = int(admin_id) if admin_id else 0
+custom_api_url = str(os.getenv("custom_api_url") or "")
+MEASUREMENT_ID = str(os.getenv("MEASUREMENT_ID") or "")
+API_SECRET = str(os.getenv("API_SECRET") or "")
+CHANNEL_ID = str(os.getenv("CHANNEL_ID") or "")
 OUTPUT_DIR = "downloads"
-INSTAGRAM_RAPID_API_HOST = str(os.getenv("INSTAGRAM_RAPID_API_HOST"))
-INSTAGRAM_RAPID_API_KEY1 = str(os.getenv("INSTAGRAM_RAPID_API_KEY1"))
-INSTAGRAM_RAPID_API_KEY2 = str(os.getenv("INSTAGRAM_RAPID_API_KEY2"))
+INSTAGRAM_RAPID_API_HOST = str(os.getenv("INSTAGRAM_RAPID_API_HOST") or "")
+INSTAGRAM_RAPID_API_KEY1 = str(os.getenv("INSTAGRAM_RAPID_API_KEY1") or "")
+INSTAGRAM_RAPID_API_KEY2 = str(os.getenv("INSTAGRAM_RAPID_API_KEY2") or "")
 
 
 BOT_COMMANDS = [
