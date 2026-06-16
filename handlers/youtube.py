@@ -1,9 +1,8 @@
 import asyncio
 import datetime
+import logging
 import os
-import time
 
-import requests
 from aiogram import types, Router, F
 from aiogram.types import FSInputFile
 from moviepy import VideoFileClip, AudioFileClip
@@ -12,35 +11,13 @@ from pytubefix.cli import on_progress
 
 import keyboards as kb
 import messages as bm
-from config import OUTPUT_DIR, BOT_TOKEN, admin_id
+from config import OUTPUT_DIR
 from handlers.user import update_info
 from main import bot, db, send_analytics
 
-MAX_FILE_SIZE = 1 * 1024 * 1024
+MAX_FILE_SIZE = 500 * 1024 * 1024
 
 router = Router()
-
-
-def custom_oauth_verifier(verification_url, user_code):
-    send_message_url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-
-    params = {
-        "chat_id": admin_id,
-        "text": f"<b>OAuth Verification</b>\n\nOpen this URL in your browser:\n{verification_url}\n\nEnter this code:\n<code>{user_code}</code>",
-        "parse_mode": "HTML"
-    }
-
-    response = requests.get(send_message_url, params=params)
-
-    if response.status_code == 200:
-        print("Message sent successfully.")
-    else:
-        print(f"Failed to send message. Status code: {response.status_code}")
-
-    # Countdown
-    for i in range(30, 0, -5):
-        print(f"{i} seconds remaining")
-        time.sleep(5)
 
 
 def download_youtube_video(video, name):
@@ -63,8 +40,7 @@ async def download_video(message: types.Message):
             react = types.ReactionTypeEmoji(emoji="👨‍💻")
             await message.react([react])
 
-        yt = YouTube(url, use_oauth=True, allow_oauth_cache=True, on_progress_callback=on_progress,
-                     oauth_verifier=custom_oauth_verifier)
+        yt = YouTube(url, on_progress_callback=on_progress)
 
         video = yt.streams.filter(res="1080p", file_extension='mp4', progressive=True).first()
 
@@ -127,7 +103,7 @@ async def download_video(message: types.Message):
             await message.reply("The video is too large.")
 
     except Exception as e:
-        print(e)
+        logging.error(f"YouTube video download failed: {e}")
         if business_id is None:
             react = types.ReactionTypeEmoji(emoji="👎")
             await message.react([react])
@@ -143,8 +119,7 @@ async def download_audio(call: types.CallbackQuery):
 
     url = call.data.split('_')[2]
 
-    yt = YouTube(url, use_oauth=True, allow_oauth_cache=True, on_progress_callback=on_progress,
-                 oauth_verifier=custom_oauth_verifier)
+    yt = YouTube(url, on_progress_callback=on_progress)
     audio = yt.streams.filter(only_audio=True, file_extension='mp4').first()
 
     name = f"{yt.video_id}_youtube_audio.mp3"
@@ -203,8 +178,7 @@ async def download_music(message: types.Message):
         download_time = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
         name = f"{download_time}_youtube_audio.mp3"
 
-        yt = YouTube(url, use_oauth=True, allow_oauth_cache=True, on_progress_callback=on_progress,
-                     oauth_verifier=custom_oauth_verifier)
+        yt = YouTube(url, on_progress_callback=on_progress)
         audio = yt.streams.filter(only_audio=True, file_extension='mp4').first()
 
         if not audio:
@@ -238,7 +212,7 @@ async def download_music(message: types.Message):
         os.remove(audio_file_path)
 
     except Exception as e:
-        print(e)
+        logging.error(f"YouTube audio download failed: {e}")
         if business_id is None:
             react = types.ReactionTypeEmoji(emoji="👎")
             await message.react([react])
