@@ -18,8 +18,9 @@ logging.basicConfig(level=logging.INFO)
 
 custom_timeout = 600  # 10 minutes
 
+api_url = custom_api_url if custom_api_url else "https://api.telegram.org"
 session = AiohttpSession(
-    api=TelegramAPIServer.from_base(custom_api_url),
+    api=TelegramAPIServer.from_base(api_url),
     timeout=custom_timeout
 )
 
