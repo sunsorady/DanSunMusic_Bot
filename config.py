@@ -13,10 +13,6 @@ MEASUREMENT_ID = str(os.getenv("MEASUREMENT_ID") or "")
 API_SECRET = str(os.getenv("API_SECRET") or "")
 CHANNEL_ID = str(os.getenv("CHANNEL_ID") or "")
 OUTPUT_DIR = "downloads"
-INSTAGRAM_RAPID_API_HOST = str(os.getenv("INSTAGRAM_RAPID_API_HOST") or "")
-INSTAGRAM_RAPID_API_KEY1 = str(os.getenv("INSTAGRAM_RAPID_API_KEY1") or "")
-INSTAGRAM_RAPID_API_KEY2 = str(os.getenv("INSTAGRAM_RAPID_API_KEY2") or "")
-
 
 BOT_COMMANDS = [
     {'command': 'start', 'description': '🚀Початок роботи / Get started🔥'},

@@ -6,7 +6,7 @@ This code is a Python Telegram Bot for downloading content from social media.
 
 ### Functionality
 
-- Downloading media from Tik-Tok, Twitter, YouTube and ~~Instagram~~(Currently not working well).
+- Downloading media from Tik-Tok, Twitter, YouTube.
 - Admin functionality for viewing user information and sending messages to all users.
 - Managing user bans and unbans.
 
@@ -34,11 +34,7 @@ Example  `.env`  file:
     db_auth = DATABASE_CONNECT_URL
     admin_id = BOT_ADMIN_ID
     custom_api_url = YOUR_CUSTOM_TELEGRAM_API_URL
-    INSTAGRAM_RAPID_API_HOST = INSTAGRAM_RAPID_API_HOST
-    INSTAGRAM_RAPID_API_KEY = INSTAGRAM_RAPID_API_KEY
-    CHANNEL_ID = Channel_For_Inline_Query_Vitedos 
-
-Api keys can be obtained from [RapidAPI](https://rapidapi.com/social-api1-instagram/api/Instagram%20Scraper%20API).
+    CHANNEL_ID = Channel_For_Inline_Query_Vitedos
 
 Run the script using Python:
 
