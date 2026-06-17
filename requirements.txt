@@ -5,8 +5,8 @@ requests
 beautifulsoup4
 python-dotenv
 cachetools
-pytubefix
 psycopg2-binary
+yt-dlp
 matplotlib
 httpx
 aiocron
