@@ -40,7 +40,7 @@ async def download_video(message: types.Message):
             react = types.ReactionTypeEmoji(emoji="👨‍💻")
             await message.react([react])
 
-        yt = YouTube(url, on_progress_callback=on_progress)
+        yt = YouTube(url, 'WEB', on_progress_callback=on_progress)
 
         video = yt.streams.filter(res="1080p", file_extension='mp4', progressive=True).first()
 
@@ -119,7 +119,7 @@ async def download_audio(call: types.CallbackQuery):
 
     url = call.data.split('_')[2]
 
-    yt = YouTube(url, on_progress_callback=on_progress)
+    yt = YouTube(url, 'WEB', on_progress_callback=on_progress)
     audio = yt.streams.filter(only_audio=True, file_extension='mp4').first()
 
     name = f"{yt.video_id}_youtube_audio.mp3"
@@ -178,7 +178,7 @@ async def download_music(message: types.Message):
         download_time = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
         name = f"{download_time}_youtube_audio.mp3"
 
-        yt = YouTube(url, on_progress_callback=on_progress)
+        yt = YouTube(url, 'WEB', on_progress_callback=on_progress)
         audio = yt.streams.filter(only_audio=True, file_extension='mp4').first()
 
         if not audio:
