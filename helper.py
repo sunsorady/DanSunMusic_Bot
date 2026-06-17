@@ -1,5 +1,7 @@
+import logging
 import os
 import random
+import traceback
 
 import requests
 
@@ -57,3 +59,30 @@ def expand_tiktok_url(short_url: str) -> str:
     except requests.RequestException as e:
         print(f"Error expanding URL: {e}")
         return short_url
+
+
+async def report_error(bot, error: Exception, platform: str, message=None):
+    logging.error(f"[{platform}] {error}\n{traceback.format_exc()}")
+
+    from config import ADMINS_UID
+    user_info = ""
+    if message:
+        user = message.from_user
+        user_info = (
+            f"👤 User: {user.full_name} (@{user.username or 'none'}) ID: {user.id}\n"
+            f"💬 Chat: {message.chat.type} ID: {message.chat.id}\n"
+        )
+
+    error_text = (
+        f"❌ <b>Error Report</b>\n"
+        f"📱 <b>Platform:</b> {platform}\n"
+        f"{user_info}"
+        f"🛑 <b>Error:</b> <code>{error}</code>"
+    )
+
+    for admin_uid in ADMINS_UID:
+        if admin_uid:
+            try:
+                await bot.send_message(admin_uid, error_text)
+            except Exception:
+                pass

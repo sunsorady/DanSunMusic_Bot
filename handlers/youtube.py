@@ -13,6 +13,7 @@ import keyboards as kb
 import messages as bm
 from config import OUTPUT_DIR
 from handlers.user import update_info
+from helper import report_error
 from main import bot, db, send_analytics
 
 MAX_FILE_SIZE = 500 * 1024 * 1024
@@ -103,7 +104,7 @@ async def download_video(message: types.Message):
             await message.reply("The video is too large.")
 
     except Exception as e:
-        logging.error(f"YouTube video download failed: {e}")
+        await report_error(bot, e, "YouTube Video", message)
         if business_id is None:
             react = types.ReactionTypeEmoji(emoji="👎")
             await message.react([react])
@@ -212,7 +213,7 @@ async def download_music(message: types.Message):
         os.remove(audio_file_path)
 
     except Exception as e:
-        logging.error(f"YouTube audio download failed: {e}")
+        await report_error(bot, e, "YouTube Audio", message)
         if business_id is None:
             react = types.ReactionTypeEmoji(emoji="👎")
             await message.react([react])

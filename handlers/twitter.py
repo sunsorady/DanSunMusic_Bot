@@ -11,6 +11,7 @@ from aiogram.utils.media_group import MediaGroupBuilder
 
 import messages as bm
 from config import OUTPUT_DIR
+from helper import report_error
 from main import bot, db, send_analytics
 
 MAX_FILE_SIZE = 500 * 1024 * 1024
@@ -98,7 +99,7 @@ async def reply_media(message, tweet_id, tweet_media, bot_url, business_id):
         os.rmdir(tweet_dir)
 
     except Exception as e:
-        print(e)
+        await report_error(bot, e, "Twitter", message)
         if business_id is None:
             react = types.ReactionTypeEmoji(emoji="👎")
             await message.react([react])

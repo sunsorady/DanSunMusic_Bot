@@ -16,7 +16,7 @@ import keyboards as kb
 import messages as bm
 from config import OUTPUT_DIR, CHANNEL_ID
 from handlers.user import update_info
-from helper import expand_tiktok_url
+from helper import expand_tiktok_url, report_error
 from main import bot, db, send_analytics
 
 MAX_FILE_SIZE = 500 * 1024 * 1024
@@ -177,6 +177,7 @@ async def process_url_tiktok(message: types.Message):
     elif "@" in full_url:
         await process_tiktok_profile(message, full_url, bot_url, user_captions)
     else:
+        await report_error(bot, Exception(f"Unknown TikTok URL type: {full_url}"), "TikTok", message)
         if business_id is None:
             await message.react([types.ReactionTypeEmoji(emoji="👎")])
         await message.reply("Something went wrong :(\nPlease try again later.")
@@ -274,8 +275,7 @@ async def process_tiktok_photos(message, full_url, bot_url, user_captions, busin
         )
 
     except Exception as e:
-        print(e)
-        await handle_download_error(message, business_id)
+        await handle_download_error(message, business_id, e)
 
 
 async def process_tiktok_profile(message, full_url, bot_url, user_captions):
@@ -309,7 +309,9 @@ async def handle_large_file(message, business_id):
     await message.reply("The video is too large.")
 
 
-async def handle_download_error(message, business_id):
+async def handle_download_error(message, business_id, error=None):
+    if error:
+        await report_error(bot, error, "TikTok", message)
     if business_id is None:
         await message.react([types.ReactionTypeEmoji(emoji="👎")])
     await message.reply("Something went wrong :(\nPlease try again later.")
