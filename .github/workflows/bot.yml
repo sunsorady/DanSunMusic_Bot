@@ -29,9 +29,10 @@ jobs:
           pip install -r requirements.txt
 
       - name: Create cookies file
-        run: cat > youtube_cookies.txt << 'COOKIE_EOF'
-${{ secrets.YT_COOKIES }}
-COOKIE_EOF
+        run: |
+          cat > youtube_cookies.txt << 'COOKIE_EOF'
+          ${{ secrets.YT_COOKIES }}
+          COOKIE_EOF
 
       - name: Run bot
         env:
