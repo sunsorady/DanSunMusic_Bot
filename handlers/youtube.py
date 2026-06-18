@@ -27,7 +27,7 @@ def _cookie_opts():
 
 def get_ydl_opts(output_path):
     opts = {
-        'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
+        'format': 'bv*+ba/b',
         'outtmpl': output_path,
         'quiet': True,
         'no_warnings': True,
