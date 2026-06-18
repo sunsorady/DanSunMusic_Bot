@@ -33,6 +33,7 @@ def get_ydl_opts(output_path):
         'no_warnings': True,
         'extract_flat': False,
         'force_generic_extractor': False,
+        'extractor_args': {'youtube': {'player_client': ['android']}},
     }
     opts.update(_cookie_opts())
     return opts
@@ -51,6 +52,7 @@ def get_video_info(url):
         'quiet': True,
         'no_warnings': True,
         'extract_flat': True,
+        'extractor_args': {'youtube': {'player_client': ['android']}},
     }
     opts.update(_cookie_opts())
     with yt_dlp.YoutubeDL(opts) as ydl:
@@ -168,6 +170,7 @@ async def download_audio(call: types.CallbackQuery):
                 'preferredcodec': 'mp3',
                 'preferredquality': '192',
             }],
+            'extractor_args': {'youtube': {'player_client': ['android']}},
         }
         audio_opts.update(_cookie_opts())
 
@@ -245,6 +248,7 @@ async def download_music(message: types.Message):
                 'preferredcodec': 'mp3',
                 'preferredquality': '192',
             }],
+            'extractor_args': {'youtube': {'player_client': ['android']}},
         }
         audio_opts.update(_cookie_opts())
 
