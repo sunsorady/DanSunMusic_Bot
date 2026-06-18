@@ -12,6 +12,7 @@ custom_api_url = str(os.getenv("custom_api_url") or "")
 MEASUREMENT_ID = str(os.getenv("MEASUREMENT_ID") or "")
 API_SECRET = str(os.getenv("API_SECRET") or "")
 CHANNEL_ID = str(os.getenv("CHANNEL_ID") or "")
+COOKIES_FILE = str(os.getenv("COOKIES_FILE") or "")
 OUTPUT_DIR = "downloads"
 
 BOT_COMMANDS = [

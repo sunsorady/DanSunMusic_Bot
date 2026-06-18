@@ -9,7 +9,7 @@ from moviepy import VideoFileClip, AudioFileClip
 
 import keyboards as kb
 import messages as bm
-from config import OUTPUT_DIR
+from config import COOKIES_FILE, OUTPUT_DIR
 from handlers.user import update_info
 from helper import report_error
 from main import bot, db, send_analytics
@@ -19,8 +19,14 @@ MAX_FILE_SIZE = 500 * 1024 * 1024
 router = Router()
 
 
+def _cookie_opts():
+    if COOKIES_FILE:
+        return {'cookiefile': COOKIES_FILE}
+    return {}
+
+
 def get_ydl_opts(output_path):
-    return {
+    opts = {
         'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
         'outtmpl': output_path,
         'quiet': True,
@@ -28,6 +34,8 @@ def get_ydl_opts(output_path):
         'extract_flat': False,
         'force_generic_extractor': False,
     }
+    opts.update(_cookie_opts())
+    return opts
 
 
 def download_video_ytdlp(url, output_path):
@@ -44,6 +52,7 @@ def get_video_info(url):
         'no_warnings': True,
         'extract_flat': True,
     }
+    opts.update(_cookie_opts())
     with yt_dlp.YoutubeDL(opts) as ydl:
         return ydl.extract_info(url, download=False)
 
@@ -160,6 +169,7 @@ async def download_audio(call: types.CallbackQuery):
                 'preferredquality': '192',
             }],
         }
+        audio_opts.update(_cookie_opts())
 
         import yt_dlp
         with yt_dlp.YoutubeDL(audio_opts) as ydl:
@@ -236,6 +246,7 @@ async def download_music(message: types.Message):
                 'preferredquality': '192',
             }],
         }
+        audio_opts.update(_cookie_opts())
 
         import yt_dlp
         with yt_dlp.YoutubeDL(audio_opts) as ydl:

@@ -161,3 +161,7 @@ cython_debug/
 #.idea/
 
 hasil.html
+
+# YouTube cookies (exported from browser - DO NOT COMMIT)
+cookies.txt
+youtube_cookies.txt

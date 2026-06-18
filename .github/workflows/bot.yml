@@ -28,6 +28,11 @@ jobs:
           pip install --upgrade pip setuptools
           pip install -r requirements.txt
 
+      - name: Create cookies file
+        env:
+          YT_COOKIES: ${{ secrets.YT_COOKIES }}
+        run: echo "$YT_COOKIES" > youtube_cookies.txt
+
       - name: Run bot
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
@@ -35,4 +40,5 @@ jobs:
           custom_api_url: ${{ secrets.custom_api_url }}
           CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
           db_auth: ${{ secrets.db_auth }}
+          COOKIES_FILE: youtube_cookies.txt
         run: python main.py
